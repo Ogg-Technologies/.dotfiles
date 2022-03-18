@@ -1,0 +1,83 @@
+filetype plugin indent on
+syntax on
+call plug#begin('~/.vim/plugged')
+" A Vim Plugin for Lively Previewing LaTeX PDF Output
+Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
+Plug 'dylanaraps/wal.vim'
+Plug 'plasticboy/vim-markdown'
+call plug#end()
+let g:livepreview_previewer = 'zathura'
+let g:livepreview_cursorhold_recompile = 0
+
+" Fix indenting in latex
+setlocal autoindent
+" endelig!
+let g:tex_indent_items=0
+let g:tex_indent_and=0
+let g:tex_indent_brace=0
+
+let mapleader = "\\"
+let maplocalleader="\\"
+map <space> \
+
+"colorscheme wal
+
+filetype plugin on
+set number 
+set relativenumber 
+set nobackup "No annoying backup files from directory 
+set ignorecase "Ignore case when searching 
+set smartcase "Only ignore case when using an uppercase letter. Lowercase mathces all. 
+set ts=4 
+set shiftwidth=4 
+set hlsearch
+set clipboard=unnamedplus
+ 
+set autoread "Reread the file when a change (from outside vim) has been detected 
+set foldmethod=syntax "Sets the folding method to the current syntax. Good for json 
+set foldlevel=4 
+set linebreak "Breaks long lines at a new word instead of in the middle of the word 
+set splitright 
+set splitbelow 
+set mouse=a
+ 
+"Open or reload vimrc from any file 
+map <leader>vco :sp $MYVIMRC<cr> 
+map <leader>vcs :so $MYVIMRC<cr> 
+
+"split navigations
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+
+"Resize splits using arrow keys
+"nnoremap <Up>    :resize +5<CR>
+"nnoremap <Down>  :resize -5<CR>
+"nnoremap <Left>  :vertical resize -5<CR>
+"nnoremap <Right> :vertical resize +5<CR>
+
+"Toggle spell check and set language
+nnoremap <leader>st :set spell!<CR>
+nnoremap <leader>ss :set spelllang=sv<CR>
+nnoremap <leader>se :set spelllang=en<CR>
+nnoremap <leader>sf [s1z=<C-o>
+
+"Remove last word with normal bindings
+noremap! <C-BS> <C-w>
+noremap! <C-h> <C-w>
+
+"Configure Cursor
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[2 q"
+
+autocmd FileType python nmap <F5> <Esc>:w<CR>:!clear<space>&&<space>python3<space>%<CR>
+autocmd FileType python imap <F5> <Esc>:w<CR>:!clear<space>&&<space>python3<space>%<CR>
+
+"autocmd FileType rust nmap <F5> <Esc>:w<CR>:!clear<space>&&<space>rustc<space>%<space>&&<space>./%:r<CR>
+"autocmd FileType rust imap <F5> <Esc>:w<CR>:!clear<space>&&<space>rustc<space>%<space>&&<space>./%:r<CR>
+autocmd FileType rust nmap <F5> <Esc>:w<CR>:!clear<space>&&<space>cargo<space>run<CR>
+autocmd FileType rust imap <F5> <Esc>:w<CR>:!clear<space>&&<space>cargo<space>run<CR>
+
+autocmd FileType tex setlocal indentexpr=
