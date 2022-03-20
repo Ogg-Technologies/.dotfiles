@@ -1,0 +1,10 @@
+# Starts vi mode if you press ESC. Open full editor with v
+set -o vi
+
+# jump words with ctrl arrowkeys
+bind '"\e[1;5D" backward-word'
+bind '"\e[1;5C" forward-word'
+
+# Ctrl-delete will delete word in front
+bind "\e[3;5~": kill-word
+
