@@ -1,0 +1,37 @@
+# Path
+export PATH=$PATH:/home/oskar/misc/tools/flutter/bin
+export PATH=$PATH:/home/oskar/scripts
+export PATH=$PATH:/home/oskar/.local/bin
+export PATH=~/anaconda3/bin:$PATH
+
+export MYVIMRC=/home/oskar/.vim/vimrc
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/oskar/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/oskar/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/oskar/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/oskar/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
