@@ -66,14 +66,20 @@ if exists('g:neovide')
     cmap <M-C-]> ]
     cmap <M-C-`> `
     cmap <M-C-@> @
+
+    let g:neovide_transparency=0.99 "slight transparency
+    let g:neovide_refresh_rate=144 "144 fps editor!!!
 endif
 
+"Allows for transparent background in terminal
+augroup user_colors
+  autocmd!
+  autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
+augroup END
 
+colorscheme onedark
 
 set guicursor=i-c:hor20-Cursor "Changes cursor to _ in insert and command mode. Removes weird flashing cursor when using space or backspace in insert mode.
-colorscheme onedark
-let g:neovide_transparency=0.99 "slight transparency
-let g:neovide_refresh_rate=144 "144 fps editor!!!
 
 "Sets the style of the parenthesis matcher
 hi MatchParen guibg=NONE guifg=orange gui=bold
