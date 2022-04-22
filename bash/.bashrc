@@ -23,12 +23,13 @@ export BASHDIR=$HOME/.config/bash
 source "$BASHDIR/bash_functions"
 
 bash_add_plugin "rupa/z"
-SBP_PATH="$BASHDIR/plugins/sbp"
-bash_add_plugin "brujoand/sbp"
-sbp set color xresources
+#SBP_PATH="$BASHDIR/plugins/sbp"
+#bash_add_plugin "brujoand/sbp"
+#sbp set color xresources
 
 bash_add_file "bash_exports"
 bash_add_file "bash_aliases"
-#bash_add_file "bash_prompt"
-bash_add_file "keybinds"
+bash_add_file "bash_prompt"
+bash_add_file "bash_keybinds"
 
+. "$HOME/.cargo/env"

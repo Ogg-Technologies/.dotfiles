@@ -23,5 +23,8 @@ alias la='ls -A'
 alias ll='ls -lAFh'
 alias l.='ls -Alh --ignore="[^.]*"'
 
-
+# git aliases
+alias gc='git commit -am'
+alias gs='git status -sb'
+alias gk='gitk --all &'
 
