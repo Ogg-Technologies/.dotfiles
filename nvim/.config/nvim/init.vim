@@ -69,13 +69,15 @@ if exists('g:neovide')
 
     let g:neovide_transparency=0.99 "slight transparency
     let g:neovide_refresh_rate=144 "144 fps editor!!!
+else
+
+    "Allows for transparent background in terminal, does not work in neovide
+    augroup user_colors
+      autocmd!
+      autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
+    augroup END
 endif
 
-"Allows for transparent background in terminal
-augroup user_colors
-  autocmd!
-  autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
-augroup END
 
 colorscheme onedark
 
