@@ -6,6 +6,12 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # Open pdfs easier
 alias za='zathura --fork'
 
+# Trash with tt (to-trash) using trash-cli
+alias tt=trash
+
+# Edit file with e
+alias e=nvim
+
 # Navigate to parent
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -29,5 +35,3 @@ alias gc='git commit -am'
 alias gs='git status -sb'
 alias gk='gitk --all &'
 
-# Trash with tt (to-trash)
-alias tt=trash
