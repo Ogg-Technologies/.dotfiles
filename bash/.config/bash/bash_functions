@@ -2,16 +2,16 @@
 
 # Function to source files if they exist
 function bash_add_file() {
-    [ -f "$BASHDIR/$1" ] && source "$BASHDIR/$1"
+    [ -f "$1" ] && source "$1"
 }
 
 function bash_add_plugin() {
     PLUGIN_NAME=$(echo $1 | cut -d "/" -f 2)
-    if [ -d "$BASHDIR/plugins/$PLUGIN_NAME" ]; then 
+    if [ -d "$BASH_PLUGINS_DIR/$PLUGIN_NAME" ]; then 
         # For plugins
-        bash_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.sh" || \
-        bash_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.bash"
+        bash_add_file "$BASH_PLUGINS_DIR/$PLUGIN_NAME/$PLUGIN_NAME.sh" || \
+        bash_add_file "$BASH_PLUGINS_DIR/$PLUGIN_NAME/$PLUGIN_NAME.bash"
     else
-        git clone "https://github.com/$1.git" "$BASHDIR/plugins/$PLUGIN_NAME"
+        git clone "https://github.com/$1.git" "$BASH_PLUGINS_DIR/$PLUGIN_NAME"
     fi
 }

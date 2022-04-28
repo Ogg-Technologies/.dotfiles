@@ -19,17 +19,14 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export BASHDIR=$HOME/.config/bash
-source "$BASHDIR/bash_functions"
+export BASH_PLUGINS_DIR=$HOME/.config/bash/plugins
+source ".config/bash/bash_functions"
 
 bash_add_plugin "rupa/z"
-#SBP_PATH="$BASHDIR/plugins/sbp"
-#bash_add_plugin "brujoand/sbp"
-#sbp set color xresources
 
-bash_add_file "bash_exports"
-bash_add_file "bash_aliases"
-bash_add_file "bash_prompt"
-bash_add_file "bash_keybinds"
+source ".config/bash/bash_exports"
+source ".config/bash/bash_aliases"
+source ".config/bash/bash_prompt"
+source ".config/bash/bash_keybinds"
 
 . "$HOME/.cargo/env"

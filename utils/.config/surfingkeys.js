@@ -5,7 +5,6 @@ api.unmap('ab');
 api.map('F', 'af');
 api.unmap('af');
 
-
 // youtube.com
 
 api.mapkey("a", "click youtube video", function() {

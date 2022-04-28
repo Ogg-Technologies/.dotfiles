@@ -1,3 +1,4 @@
+#!/bin/sh
 # Starts vi mode if you press ESC. Open full editor with v
 set -o vi
 

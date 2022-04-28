@@ -1,3 +1,4 @@
+#!/bin/sh
 # Path
 export PATH=$PATH:/home/oskar/misc/tools/flutter/bin
 export PATH=$PATH:/home/oskar/scripts
