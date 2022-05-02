@@ -10,7 +10,10 @@ alias za='zathura --fork'
 alias tt=trash
 
 # Edit file with e
-alias e=nvim
+alias e=$EDITOR
+
+# Edit bashrc
+alias bashrc='$EDITOR ~/.bashrc'
 
 # Navigate to parent
 alias ..='cd ..'

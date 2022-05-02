@@ -8,6 +8,17 @@ case $- in
       *) return;;
 esac
 
+export BASH_PLUGINS_DIR=$HOME/.config/bash/plugins
+source "$HOME/.config/bash/bash_functions"
+
+source "$HOME/.config/bash/bash_exports"
+source "$HOME/.config/bash/bash_aliases"
+source "$HOME/.config/bash/bash_prompt"
+source "$HOME/.config/bash/bash_keybinds"
+
+bash_add_plugin "rupa/z"
+
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -19,14 +30,5 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export BASH_PLUGINS_DIR=$HOME/.config/bash/plugins
-source ".config/bash/bash_functions"
-
-bash_add_plugin "rupa/z"
-
-source ".config/bash/bash_exports"
-source ".config/bash/bash_aliases"
-source ".config/bash/bash_prompt"
-source ".config/bash/bash_keybinds"
 
 . "$HOME/.cargo/env"

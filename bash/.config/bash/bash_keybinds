@@ -9,3 +9,6 @@ bind '"\e[1;5C" forward-word'
 # Ctrl-delete will delete word in front
 #bind "\e[3;5~": kill-word
 
+# Enables ctrl-l to clear screen (vi mode disables it)
+bind -m vi-command 'Control-l: clear-screen'
+bind -m vi-insert 'Control-l: clear-screen'
