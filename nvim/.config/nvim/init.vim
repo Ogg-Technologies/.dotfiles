@@ -9,26 +9,13 @@ call plug#begin()
 Plug 'tpope/vim-surround' "Surround
 Plug 'joshdick/onedark.vim' "Color scheme
 Plug 'ctrlpvim/ctrlp.vim' "Fuzzy file finder
-"Plug 'ms-jpq/chadtree' "File explorer
-"Plug 'vim-airline/vim-airline' "status line
-"Plug 'mhinz/vim-startify' "Fancy start screen for vim
 Plug 'AndrewRadev/undoquit.vim' "Lets you reopen closed window
 Plug 'lilydjwg/colorizer' "Shows the color of hex/hsla codes
 Plug 'tommcdo/vim-lion' "Align rows with gl and gL
 Plug 'vim-scripts/argtextobj.vim' "Adds ia/aa argument text objects
 Plug 'yuttie/comfortable-motion.vim' "Smooth scrolling for ctrl-f/b/d/u
+Plug 'github/copilot.vim' "Copilot autocomplete
 call plug#end()
-
-"Open chadtree binding
-nnoremap <leader>f <cmd>CHADopen<cr>
-let g:chadtree_settings = { 
-    \ "theme.text_colour_set" : "nerdtree_syntax_dark" 
-    \ }
-
-" Adds font symbols to vim-airline
-let g:airline_powerline_fonts = 1
-
-"nnoremap <leader>s <cmd>Startify<cr>
 
 let g:undoquit_mapping = '' "remove the default <c-w>u mapping
 " Use ctrl shift t as the mapping like browsers do
@@ -100,6 +87,7 @@ set inccommand=split "Real time substitute and opens a window showing all change
 set mouse=a
 set noshowmode
 set nohlsearch
+set foldmethod=indent
 
 
 "Saves undo, backups and swap files in a separate directory
@@ -143,13 +131,64 @@ nnoremap <Right> :vertical resize +5<CR>
 nnoremap <leader>st :set spell!<CR>
 nnoremap <leader>ss :set spelllang=sv<CR>
 nnoremap <leader>se :set spelllang=en<CR>
-nnoremap <leader>sf [s1z=<C-o>
+nnoremap <leader>sf [s1z=
+
+"Copilot mappings
+function! CopilotToggle()
+  redir => status
+  silent execute 'Copilot status'
+  redir END
+  if status =~ 'Enabled'
+    execute 'Copilot disable'
+  else
+    execute 'Copilot enable'
+  endif
+  execute 'Copilot status'
+endfunction
+nnoremap <leader>ct :call CopilotToggle()<CR>
+"Uses <M-ä> since <C-ä> cannot be mapped as it does not produce an ASCII character
+inoremap <M-ä> <esc>:Copilot panel<CR>
 
 "Remove last word with normal bindings
-:imap <C-BS> <C-W>
+noremap! <C-BS> <C-w>
+noremap! <C-h> <C-w>
 
 "Remove highlight (run :noh) with space+n
 nnoremap <leader>n :noh<cr>
+
+"Swap selected text around pivot substring
+function! SwapSelection(pivot)
+    "Get the right visual selection:
+    "Select the last selection
+    normal! gv
+    "If the cursor is at the start, move it to the end
+    if getpos('.') == getpos("'<")
+        normal! o
+    endif
+    "Select one more char to the right. \%V will otherwise miss the last char
+    normal! l
+
+    "Swap the two parts around the pivot
+    execute 's/\%V\(.*\)' . a:pivot . '\(.*\)\%V/\2' . a:pivot . '\1'
+    "Deselect text
+    call feedkeys("\<esc>")
+    "Move cursor to the pivot point
+    call search(a:pivot, 'W', line('.'))
+endfunction
+
+"Prompt the user for a pivot point, swap selection around it
+function! SwapSelectionAroundPrompt(addSpace)
+    let pivot = input('Swap around: ')
+    if a:addSpace
+        let pivot = ' ' . pivot . ' '
+    endif
+    call SwapSelection(pivot)
+endfunction
+
+"Swap in (excludes spaces)
+vnoremap gsi :call SwapSelectionAroundPrompt(0)<CR>
+"Swap around (includes spaces)
+vnoremap gsa :call SwapSelectionAroundPrompt(1)<CR>
 
 
 let s:fontsize = 10
@@ -168,5 +207,5 @@ inoremap <C-+> <Esc>:call AdjustFontSize(1)<CR>a
 inoremap <C--> <Esc>:call AdjustFontSize(-1)<CR>a
 
 "Save and run file
-autocmd FileType python nmap <F5> <Esc>:w<CR>:!cls<space>&&<space>%<CR>
-autocmd FileType python imap <F5> <Esc>:w<CR>:!cls<space>&&<space>%<CR>
+autocmd FileType python nmap <F5> <Esc>:w<CR>:!python<space>%<CR>
+autocmd FileType python imap <F5> <Esc>:w<CR>:!python<space>%<CR>
