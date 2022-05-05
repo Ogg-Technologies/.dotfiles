@@ -8,18 +8,22 @@ nnoremap <space> <Nop>
 call plug#begin()
 Plug 'tpope/vim-surround' "Surround
 Plug 'joshdick/onedark.vim' "Color scheme
-Plug 'ctrlpvim/ctrlp.vim' "Fuzzy file finder
 Plug 'AndrewRadev/undoquit.vim' "Lets you reopen closed window
+Plug 'yuttie/comfortable-motion.vim' "Smooth scrolling for ctrl-f/b/d/u
+Plug 'github/copilot.vim' "Copilot autocomplete
+Plug 'junegunn/goyo.vim' "Centers text
+Plug 'ctrlpvim/ctrlp.vim' "Fuzzy file finder
 Plug 'lilydjwg/colorizer' "Shows the color of hex/hsla codes
 Plug 'tommcdo/vim-lion' "Align rows with gl and gL
 Plug 'vim-scripts/argtextobj.vim' "Adds ia/aa argument text objects
-Plug 'yuttie/comfortable-motion.vim' "Smooth scrolling for ctrl-f/b/d/u
-Plug 'github/copilot.vim' "Copilot autocomplete
 call plug#end()
 
 let g:undoquit_mapping = '' "remove the default <c-w>u mapping
 " Use ctrl shift t as the mapping like browsers do
-map <c-s-t> :Undoquit<cr> 
+noremap <c-s-t> :Undoquit<cr> 
+inoremap <c-s-t> :Undoquit<cr>
+
+nnoremap <leader>g :Goyo<cr>
 
 " Makes the comfortable_motion move faster (e.g in ctrl-f)
 let g:comfortable_motion_friction = 500
@@ -86,8 +90,10 @@ set expandtab "Use spaces instead of tabs
 set inccommand=split "Real time substitute and opens a window showing all changes
 set mouse=a
 set noshowmode
-set nohlsearch
-set foldmethod=indent
+set nohlsearch "Does not keep the highlights when finished searching
+set foldmethod=indent "Folds based on indentation
+set foldlevel=99 "Starting fold is at 99 levels of indentation (starts with no folds)
+set scrolloff=3
 
 
 "Saves undo, backups and swap files in a separate directory
@@ -191,14 +197,13 @@ vnoremap gsi :call SwapSelectionAroundPrompt(0)<CR>
 vnoremap gsa :call SwapSelectionAroundPrompt(1)<CR>
 
 
-let s:fontsize = 10
+let s:fontsize = 14
 " Uses this font: https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/FiraCode/Regular/complete/Fira%20Code%20Regular%20Nerd%20Font%20Complete.ttf
 let s:fontName="FiraCode\\ Nerd\\ Font\\ Mono"
 function! AdjustFontSize(amount)
   let s:fontsize = s:fontsize+a:amount
   :execute "set guifont=" . s:fontName . ":h" . s:fontsize
 endfunction
-"set guifont=FiraCode\ NF:h14 "Not needed, done dynamically by next line
 call AdjustFontSize(0)
 
 noremap <C-+> :call AdjustFontSize(1)<CR>
