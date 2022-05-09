@@ -6,6 +6,16 @@ api.map('F', 'af');
 api.unmap('af');
 
 // youtube.com
+api.mapkey("<Space>w", "Add Watch Later", function() {
+    api.Hints.create("#video-title", function(e) {
+        // Click dropdown button next to this title
+        e.closest('#details').querySelector('#primary button[aria-label="Action menu"]').click();
+        // Click "Add to Watch Later" (index 1 in dropdown)
+        setTimeout(function() {
+            document.querySelectorAll('.style-scope ytd-menu-service-item-renderer')[1].click();
+        }, 100);
+    });
+}, {domain: /youtube.com/i});
 
 api.mapkey("a", "click youtube video", function() {
     api.Hints.create("#video-title", api.Hints.dispatchMouseClick);
