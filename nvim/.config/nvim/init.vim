@@ -16,6 +16,7 @@ Plug 'ctrlpvim/ctrlp.vim' "Fuzzy file finder
 Plug 'lilydjwg/colorizer' "Shows the color of hex/hsla codes
 Plug 'tommcdo/vim-lion' "Align rows with gl and gL
 Plug 'vim-scripts/argtextobj.vim' "Adds ia/aa argument text objects
+Plug 'lewis6991/gitsigns.nvim' "Like gitgutter, shows changed lines in sign column
 
 
 Plug 'nvim-lua/plenary.nvim' "Required by refactoring.nvim
@@ -36,10 +37,12 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'williamboman/nvim-lsp-installer' "Installs LSP clients
 call plug#end()
 
+lua require('gitsigns').setup()
+
 set completeopt=menu,menuone,noselect
 lua <<EOF
   -- Setup nvim-cmp.
-  local cmp = require'cmp'
+  local cmp = require('cmp')
 
   cmp.setup({
     snippet = {
@@ -54,9 +57,15 @@ lua <<EOF
     mapping = cmp.mapping.preset.insert({
       ['<C-b>'] = cmp.mapping.scroll_docs(-4),
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-Space>'] = cmp.mapping.complete(),
-      ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+      ['<ESC>'] = cmp.mapping(cmp.mapping.abort(), { 'i', 'c' }),
+      ['<CR>'] = cmp.mapping(function(fallback)
+          if cmp.visible() and cmp.get_selected_entry() then
+             cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+          else
+             fallback()
+          end
+        end, { 'i', 'c' }),
     }),
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
@@ -170,6 +179,8 @@ set guicursor=i-c:hor20-Cursor "Changes cursor to _ in insert and command mode. 
 "Sets the style of the parenthesis matcher
 hi MatchParen guibg=NONE guifg=orange gui=bold
 
+set autochdir "Automatically change the current directory to the one of the file you are editing
+set browsedir=current "Always open Explorer in the current directory
 set signcolumn=yes "Always show left column (for e.g warnings)
 set langmenu=eng_US.UTF-8
 language en_GB.utf8

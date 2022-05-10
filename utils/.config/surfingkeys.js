@@ -44,15 +44,15 @@ for (const {key, name, url} of ytGotos) {
 
 // google.com
 const googleSearchResultSelector = [
-  "a h3",
-  "h3 a",
-  "a[href^='/search']:not(.fl):not(#pnnext,#pnprev):not([role]):not(.hide-focus-ring)",
-  "g-scrolling-carousel a",
-  ".rc > div:nth-child(2) a",
-  ".kno-rdesc a",
-  ".kno-fv a",
-  ".isv-r > a:first-child",
-  ".dbsr > a:first-child",
+    "a h3",
+    "h3 a",
+    "a.fl",
+    "g-scrolling-carousel a",
+    ".rc > div:nth-child(2) a",
+    ".kno-rdesc a",
+    ".kno-fv a",
+    ".isv-r > a:first-child",
+    ".dbsr > a:first-child",
 ].join(",")
 
 api.mapkey("a", "open google result", function() {
