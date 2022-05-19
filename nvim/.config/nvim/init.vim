@@ -270,39 +270,36 @@ noremap! <C-h> <C-w>
 "Remove highlight (run :noh) with space+n
 nnoremap <leader>n :noh<cr>
 
-"Swap selected text around pivot substring
-function! SwapSelection(pivot)
-    "Get the right visual selection:
-    "Select the last selection
-    normal! gv
-    "If the cursor is at the start, move it to the end
-    if getpos('.') == getpos("'<")
-        normal! o
-    endif
-    "Select one more char to the right. \%V will otherwise miss the last char
-    normal! l
+lua <<EOF
+    -- Swap selected text around pivot substring
+    function swap_selection(pivot)
+        start_mark = vim.api.nvim_buf_get_mark(0, "<")
+        finish_mark = vim.api.nvim_buf_get_mark(0, ">")
+        start_row = start_mark[1] - 1
+        start_col = start_mark[2]
+        finish_row = finish_mark[1] - 1
+        finish_col = finish_mark[2] + 1
+        line_length = #vim.api.nvim_buf_get_lines(0, start_row, start_row + 1, false)[1]
+        if finish_col > line_length then finish_col = line_length end
+        selected = vim.api.nvim_buf_get_text(0, start_row, start_col, finish_row, finish_col, {})[1]
+        swapped = selected:gsub("(.*)" .. pivot .. "(.*)", "%2" .. pivot .. "%1")
+        vim.api.nvim_buf_set_text(0, start_row, start_col, finish_row, finish_col, {swapped})
+    end
+    -- Prompt the user for a pivot point, swap selection around it
+    function swap_selection_around_prompt(addSpace)
+        local pivot = vim.fn.input("Swap around: ")
+        if addSpace then
+            pivot = " " .. pivot .. " "
+        end
+        swap_selection(pivot)
+    end
+EOF
 
-    "Swap the two parts around the pivot
-    execute 's/\%V\(.*\)' . a:pivot . '\(.*\)\%V/\2' . a:pivot . '\1'
-    "Deselect text
-    call feedkeys("\<esc>")
-    "Move cursor to the pivot point
-    call search(a:pivot, 'W', line('.'))
-endfunction
-
-"Prompt the user for a pivot point, swap selection around it
-function! SwapSelectionAroundPrompt(addSpace)
-    let pivot = input('Swap around: ')
-    if a:addSpace
-        let pivot = ' ' . pivot . ' '
-    endif
-    call SwapSelection(pivot)
-endfunction
 
 "Swap in (excludes spaces)
-vnoremap gsi :call SwapSelectionAroundPrompt(0)<CR>
+vnoremap gsi :lua swap_selection_around_prompt(false)<CR>
 "Swap around (includes spaces)
-vnoremap gsa :call SwapSelectionAroundPrompt(1)<CR>
+vnoremap gsa :lua swap_selection_around_prompt(true)<CR>
 
 
 let s:fontsize = 14
