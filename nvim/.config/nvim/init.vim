@@ -226,6 +226,8 @@ map <leader>vcs :silent so $MYVIMRC<cr>
 "Make C-c equivalent to esc. Normally C-c does not trigger InsertLeave event
 imap <C-c> <Esc>
 
+tnoremap <C-n> <C-\><C-n>
+
 "split navigations
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
