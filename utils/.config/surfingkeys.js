@@ -59,6 +59,17 @@ api.mapkey("a", "open google result", function() {
     api.Hints.create(googleSearchResultSelector, api.Hints.dispatchMouseClick);
 }, {domain: /google.com/i});
 
+// reddit.com
+api.mapkey("a", "open reddit post/toggle comment", function() {
+    api.Hints.create("h3,i.threadline,i.icon-expand", function(e) {
+        if (e.outerHTML === "h3") {
+            e.closest("a").click();
+        } else {
+            e.click();
+        }
+    });
+}, {domain: /reddit.com/i});
+
 // set theme
 settings.theme = `
 .sk_theme {
@@ -97,4 +108,3 @@ settings.theme = `
 #sk_status, #sk_find {
     font-size: 20pt;
 }`;
-// click `Save` button to make above settings to take effect.</ctrl-i></ctrl-y>
