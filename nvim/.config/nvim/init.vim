@@ -17,6 +17,8 @@ Plug 'lilydjwg/colorizer' "Shows the color of hex/hsla codes
 Plug 'tommcdo/vim-lion' "Align rows with gl and gL
 Plug 'vim-scripts/argtextobj.vim' "Adds ia/aa argument text objects
 Plug 'lewis6991/gitsigns.nvim' "Like gitgutter, shows changed lines in sign column
+Plug 'ggandor/lightspeed.nvim' "Jump anywhere on screen (s followed by 2 letters)
+Plug 'monaqa/dial.nvim' "Better c-a and c-x
 
 
 Plug 'nvim-lua/plenary.nvim' "Required by refactoring.nvim
@@ -115,6 +117,60 @@ lua <<EOF
     end
 EOF
 
+" Dial setup, create keybinds and augends
+nmap  <C-a>  <Plug>(dial-increment)
+nmap  <C-x>  <Plug>(dial-decrement)
+vmap  <C-a>  <Plug>(dial-increment)
+vmap  <C-x>  <Plug>(dial-decrement)
+vmap g<C-a> g<Plug>(dial-increment)
+vmap g<C-x> g<Plug>(dial-decrement)
+
+lua <<EOF
+    local augend = require("dial.augend")
+    default_group = {
+        augend.integer.alias.decimal,
+        augend.constant.alias.bool,
+        augend.integer.alias.hex,
+        augend.integer.alias.binary,
+        augend.date.alias["%Y-%m-%d"],
+        augend.constant.new{
+            elements = {"and", "or"},
+            word = true,
+            cyclic = true,
+        },
+    }
+    function map(tbl, func)
+        local newtbl = {}
+        for i,v in pairs(tbl) do
+            newtbl[i] = func(v)
+        end
+        return newtbl
+    end
+    function add_case_respecting_constants(elements, cyclic)
+        lowercase_elements = map(elements, function(s) return string.lower(s) end)
+        capitalized_elements = map(elements, function(s) return s:gsub("^%l", string.upper) end)
+        uppercase_elements = map(elements, function(s) return string.upper(s) end)
+        for _, elems in ipairs({lowercase_elements, capitalized_elements, uppercase_elements}) do
+            table.insert(default_group, augend.constant.new {
+                elements = elems,
+                word = true,
+                cyclic = cyclic,
+            })
+        end
+    end
+    add_case_respecting_constants({"true", "false"}, true)
+    add_case_respecting_constants({"yes", "no"}, true)
+    add_case_respecting_constants({"on", "off"}, true)
+    add_case_respecting_constants({"enable", "disable"}, true)
+    add_case_respecting_constants({"enabled", "disabled"}, true)
+    add_case_respecting_constants({"and", "or"}, true)
+    add_case_respecting_constants({"active", "inactive"}, true)
+    add_case_respecting_constants({"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"}, false)
+    add_case_respecting_constants({"och", "eller"}, true)
+    add_case_respecting_constants({"noll", "ett", "två", "tre", "fyra", "fem", "sex", "sju", "åtta", "nio", "tio", "elva", "tolv", "tretton", "fjorton", "femton", "sexton", "sjutton", "arton", "nitton", "tjugo"}, false)
+
+    require("dial.config").augends:register_group { default = default_group }
+EOF
 
 vnoremap <leader>rr :lua require('refactoring').select_refactor()<CR>
 
@@ -196,7 +252,7 @@ set noshowmode
 set nohlsearch "Does not keep the highlights when finished searching
 set foldmethod=indent "Folds based on indentation
 set foldlevel=99 "Starting fold is at 99 levels of indentation (starts with no folds)
-set scrolloff=3
+set scrolloff=8
 
 
 "Saves undo, backups and swap files in a separate directory
