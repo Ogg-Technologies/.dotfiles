@@ -20,6 +20,7 @@ Plug 'lewis6991/gitsigns.nvim' "Like gitgutter, shows changed lines in sign colu
 Plug 'ggandor/lightspeed.nvim' "Jump anywhere on screen (s followed by 2 letters)
 Plug 'monaqa/dial.nvim' "Better c-a and c-x
 Plug 'tpope/vim-repeat' "Improved . operator
+Plug 'mbbill/undotree' "Tree with undo history
 
 
 Plug 'nvim-lua/plenary.nvim' "Required by refactoring.nvim
@@ -186,8 +187,8 @@ nnoremap <leader>g :Goyo<cr>
 let g:comfortable_motion_friction = 500
 let g:comfortable_motion_air_drag = 2
 let g:comfortable_motion_no_default_key_mappings = 1
-let g:comfortable_motion_impulse_large = 300
-let g:comfortable_motion_impulse_small = 180
+let g:comfortable_motion_impulse_large = 250
+let g:comfortable_motion_impulse_small = 160
 nnoremap <silent> <C-d> :call comfortable_motion#flick(g:comfortable_motion_impulse_small)<CR>
 nnoremap <silent> <C-u> :call comfortable_motion#flick(-g:comfortable_motion_impulse_small)<CR>
 nnoremap <silent> <C-f> :call comfortable_motion#flick(g:comfortable_motion_impulse_large)<CR>
@@ -241,7 +242,6 @@ set langmenu=eng_US.UTF-8
 language en_GB.utf8
 set belloff=all "No microsoft bell sound
 set number
-set relativenumber
 set clipboard=unnamedplus "Uses the default clipboard
 set ts=4
 set shiftwidth=4
@@ -303,6 +303,8 @@ nnoremap <leader>st :set spell!<CR>
 nnoremap <leader>ss :set spelllang=sv<CR>
 nnoremap <leader>se :set spelllang=en<CR>
 nnoremap <leader>sf [s1z=
+
+nnoremap <leader>u :UndotreeToggle<CR>
 
 "Copilot mappings
 function! CopilotToggle()
