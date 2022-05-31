@@ -19,6 +19,7 @@ Plug 'vim-scripts/argtextobj.vim' "Adds ia/aa argument text objects
 Plug 'lewis6991/gitsigns.nvim' "Like gitgutter, shows changed lines in sign column
 Plug 'ggandor/lightspeed.nvim' "Jump anywhere on screen (s followed by 2 letters)
 Plug 'monaqa/dial.nvim' "Better c-a and c-x
+Plug 'tpope/vim-repeat' "Improved . operator
 
 
 Plug 'nvim-lua/plenary.nvim' "Required by refactoring.nvim
