@@ -21,6 +21,7 @@ Plug 'ggandor/lightspeed.nvim' "Jump anywhere on screen (s followed by 2 letters
 Plug 'monaqa/dial.nvim' "Better c-a and c-x
 Plug 'tpope/vim-repeat' "Improved . operator
 Plug 'mbbill/undotree' "Tree with undo history
+Plug 'chentoast/live.nvim' "Preview for :norm command
 
 
 Plug 'nvim-lua/plenary.nvim' "Required by refactoring.nvim
@@ -41,6 +42,7 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'williamboman/nvim-lsp-installer' "Installs LSP clients
 call plug#end()
 
+lua require('live').setup()
 lua require('gitsigns').setup()
 
 set completeopt=menu,menuone,noselect
