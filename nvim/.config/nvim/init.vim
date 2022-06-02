@@ -22,6 +22,8 @@ Plug 'monaqa/dial.nvim' "Better c-a and c-x
 Plug 'tpope/vim-repeat' "Improved . operator
 Plug 'mbbill/undotree' "Tree with undo history
 Plug 'chentoast/live.nvim' "Preview for :norm command
+Plug 'lukas-reineke/indent-blankline.nvim' "Shows indentation
+Plug 'akinsho/toggleterm.nvim' "Terminal that you can toggle in a split
 
 
 Plug 'nvim-lua/plenary.nvim' "Required by refactoring.nvim
@@ -47,6 +49,23 @@ lua require('gitsigns').setup()
 
 set completeopt=menu,menuone,noselect
 lua <<EOF
+    -- Setup toggleterm
+    require('toggleterm').setup{
+        -- size can be a number or function which is passed the current terminal
+        size = 50,
+        open_mapping = [[<c-y>]],
+        hide_numbers = true, -- hide the number column in toggleterm buffers
+        shade_terminals = true, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
+        --shading_factor = '<number>', -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
+        start_in_insert = true,
+        insert_mappings = true, -- whether or not the open mapping applies in insert mode
+        terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
+        persist_size = true,
+        direction = 'vertical',
+        close_on_exit = false, -- close the terminal window when the process exits
+    }
+
+
     -- Setup nvim-cmp.
     local cmp = require('cmp')
 
@@ -109,15 +128,27 @@ lua <<EOF
     -- Setup lspconfig.
     local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-    local servers = { "pyright", "vimls" }
+    local servers = { "pyright", "vimls", "hls" }
     require("nvim-lsp-installer").setup {
         ensure_installed = servers
     }
 
     for _, server in ipairs(servers) do
-        opt = {}
-        opt.capabilities = capabilities
-        require('lspconfig')[server].setup(opt)
+        require('lspconfig')[server].setup {
+            on_attach = function(client, bufnr)
+                -- Mappings.
+                -- See `:help vim.lsp.*` for documentation on any of the below functions
+                local bufopts = { noremap=true, silent=true, buffer=bufnr }
+                vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+                vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+                vim.keymap.set('n', '<space>lr', vim.lsp.buf.rename, bufopts)
+                vim.keymap.set('n', '<space>la', vim.lsp.buf.code_action, bufopts)
+                vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+                vim.keymap.set('n', '<c-m-l>', vim.lsp.buf.format, bufopts)
+                vim.keymap.set('n', '<space>le', vim.diagnostic.open_float, opts)
+            end,
+            capabilities = capabilities,
+        }
     end
 EOF
 
@@ -246,13 +277,12 @@ set belloff=all "No microsoft bell sound
 set number
 set clipboard=unnamedplus "Uses the default clipboard
 set ts=4
-set shiftwidth=4
+set shiftwidth=0
 set linebreak "Dont break line in middle of word
 set expandtab "Use spaces instead of tabs
 set inccommand=split "Real time substitute and opens a window showing all changes
 set mouse=a
 set noshowmode
-set nohlsearch "Does not keep the highlights when finished searching
 set foldmethod=indent "Folds based on indentation
 set foldlevel=99 "Starting fold is at 99 levels of indentation (starts with no folds)
 set scrolloff=8
@@ -286,11 +316,15 @@ map <leader>vcs :silent so $MYVIMRC<cr>
 imap <C-c> <Esc>
 
 tnoremap <C-n> <C-\><C-n>
+tnoremap <C-h> <C-\><C-n><C-w>h
+tnoremap <C-j> <C-\><C-n><C-w>j
+tnoremap <C-k> <C-\><C-n><C-w>k
+tnoremap <C-l> <C-\><C-n><C-w>l
 
 "split navigations
+nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
-nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
 "Resize splits using arrow keys
@@ -380,3 +414,5 @@ inoremap <C--> <Esc>:call AdjustFontSize(-1)<CR>a
 "Save and run file
 autocmd FileType python nmap <F5> <Esc>:w<CR>:!python<space>%<CR>
 autocmd FileType python imap <F5> <Esc>:w<CR>:!python<space>%<CR>
+
+autocmd FileType haskell nmap <F5> <Esc>:w<CR>:!runghc %<CR>

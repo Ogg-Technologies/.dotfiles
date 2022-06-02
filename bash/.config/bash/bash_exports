@@ -5,6 +5,8 @@ export PATH=$PATH:/home/oskar/scripts
 export PATH=$PATH:/home/oskar/.local/bin
 export PATH=~/anaconda3/bin:$PATH
 
+[ -f "/home/oskar/.ghcup/env" ] && source "/home/oskar/.ghcup/env" # ghcup-env
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
