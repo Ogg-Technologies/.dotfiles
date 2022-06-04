@@ -305,6 +305,8 @@ set noshowmode
 set foldmethod=indent "Folds based on indentation
 set foldlevel=99 "Starting fold is at 99 levels of indentation (starts with no folds)
 set scrolloff=8
+set ignorecase
+set smartcase
 
 
 "Saves undo, backups and swap files in a separate directory
@@ -361,7 +363,8 @@ nnoremap <leader>sf [s1z=
 
 nnoremap <leader>u :UndotreeToggle<CR>
 
-"Copilot mappings
+"Copilot settings
+let g:copilot_filetypes = { '*': v:true } "Enable for all filetypes
 function! CopilotToggle()
   redir => status
   silent execute 'Copilot status'
