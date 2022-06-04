@@ -27,7 +27,7 @@ Plug 'akinsho/toggleterm.nvim' "Terminal that you can toggle in a split
 
 
 Plug 'nvim-lua/plenary.nvim' "Required by refactoring.nvim
-Plug 'nvim-treesitter/nvim-treesitter' "Required by refactoring.nvim
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} "Syntax highlighting
 Plug 'ThePrimeagen/refactoring.nvim' "Adds refactoring support
 
 
@@ -65,6 +65,25 @@ lua <<EOF
         close_on_exit = false, -- close the terminal window when the process exits
     }
 
+
+
+    require'nvim-treesitter.configs'.setup {
+        ensure_installed = { "javascript", "java", "markdown", "bash", "json", "haskell", "vim", "lua", "rust" },
+
+        -- Install parsers synchronously (only applied to `ensure_installed`)
+        sync_install = false,
+
+        highlight = {
+            -- `false` will disable the whole extension
+            enable = true,
+
+            -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+            -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+            -- Using this option may slow down your editor, and you may see some duplicate highlights.
+            -- Instead of true it can also be a list of languages
+            additional_vim_regex_highlighting = false,
+        },
+    }
 
     -- Setup nvim-cmp.
     local cmp = require('cmp')
