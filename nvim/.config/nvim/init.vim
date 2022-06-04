@@ -52,7 +52,7 @@ lua <<EOF
     -- Setup toggleterm
     require('toggleterm').setup{
         -- size can be a number or function which is passed the current terminal
-        size = 50,
+        size = 80,
         open_mapping = [[<c-y>]],
         hide_numbers = true, -- hide the number column in toggleterm buffers
         shade_terminals = true, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
@@ -412,7 +412,18 @@ inoremap <C-+> <Esc>:call AdjustFontSize(1)<CR>a
 inoremap <C--> <Esc>:call AdjustFontSize(-1)<CR>a
 
 "Save and run file
-autocmd FileType python nmap <F5> <Esc>:w<CR>:!python<space>%<CR>
-autocmd FileType python imap <F5> <Esc>:w<CR>:!python<space>%<CR>
+augroup RunCode
+    autocmd!
+    autocmd FileType python nmap <F5> <Esc>:w<CR>:!python<space>%<CR>
+    autocmd FileType python imap <F5> <Esc>:w<CR>:!python<space>%<CR>
 
-autocmd FileType haskell nmap <F5> <Esc>:w<CR>:!runghc %<CR>
+    autocmd FileType haskell nmap <F5> <Esc>:w<CR>:!runghc %<CR>
+    autocmd FileType haskell imap <F5> <Esc>:w<CR>:!runghc %<CR>
+augroup END
+
+lua <<EOF
+    function RerunHaskell()
+        vim.cmd("TermExec cmd=':r' go_back=0")
+        vim.cmd("TermExec cmd='main' go_back=0")
+    end
+EOF
