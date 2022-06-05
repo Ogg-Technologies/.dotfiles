@@ -24,6 +24,7 @@ Plug 'mbbill/undotree' "Tree with undo history
 Plug 'chentoast/live.nvim' "Preview for :norm command
 Plug 'lukas-reineke/indent-blankline.nvim' "Shows indentation
 Plug 'akinsho/toggleterm.nvim' "Terminal that you can toggle in a split
+Plug 'David-Kunz/treesitter-unit' "Textobject for treesitter nodes
 
 
 Plug 'nvim-lua/plenary.nvim' "Required by refactoring.nvim
@@ -45,15 +46,40 @@ Plug 'williamboman/nvim-lsp-installer' "Installs LSP clients
 call plug#end()
 
 lua require('live').setup()
-lua require('gitsigns').setup()
 
 set completeopt=menu,menuone,noselect
 lua <<EOF
+    -- setup gitsigns
+    require('gitsigns').setup{
+        on_attach = function(bufnr)
+            local gs = package.loaded.gitsigns
+            local function map(mode, l, r, opts)
+                opts = opts or {}
+                opts.buffer = bufnr
+                vim.keymap.set(mode, l, r, opts)
+            end
+            map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>') -- "ih" becomes "in hunk" text object
+            -- navigate to next/previous hunk (only when not in vim diff mode)
+            map('n', ']h', function()
+                if vim.wo.diff then return ']h' end
+                vim.schedule(function() gs.next_hunk() end)
+                return '<Ignore>'
+            end, {expr=true})
+
+            map('n', '[h', function()
+                if vim.wo.diff then return '[h' end
+                vim.schedule(function() gs.prev_hunk() end)
+                return '<Ignore>'
+            end, {expr=true})
+        end
+    }
+
+
     -- Setup toggleterm
     require('toggleterm').setup{
         -- size can be a number or function which is passed the current terminal
         size = 80,
-        open_mapping = [[<c-y>]],
+        open_mapping = [[<c-s>]],
         hide_numbers = true, -- hide the number column in toggleterm buffers
         shade_terminals = true, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
         --shading_factor = '<number>', -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
@@ -164,12 +190,20 @@ lua <<EOF
                 vim.keymap.set('n', '<space>la', vim.lsp.buf.code_action, bufopts)
                 vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
                 vim.keymap.set('n', '<c-m-l>', vim.lsp.buf.format, bufopts)
-                vim.keymap.set('n', '<space>le', vim.diagnostic.open_float, opts)
+                vim.keymap.set('n', '<space>ld', vim.diagnostic.open_float, opts)
             end,
             capabilities = capabilities,
         }
     end
 EOF
+
+nnoremap <silent> [d :lua vim.diagnostic.goto_prev()<CR>
+nnoremap <silent> ]d :lua vim.diagnostic.goto_next()<CR>
+
+xnoremap iu :lua require"treesitter-unit".select()<CR>
+xnoremap au :lua require"treesitter-unit".select(true)<CR>
+onoremap iu :<c-u>lua require"treesitter-unit".select()<CR>
+onoremap au :<c-u>lua require"treesitter-unit".select(true)<CR>
 
 " Dial setup, create keybinds and augends
 nmap  <C-a>  <Plug>(dial-increment)

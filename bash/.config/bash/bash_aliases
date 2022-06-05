@@ -14,6 +14,7 @@ alias e=$EDITOR
 
 # Edit bashrc
 alias bashrc='$EDITOR ~/.bashrc'
+alias vimrc='$EDITOR ~/.config/nvim/init.vim'
 
 # Navigate to parent
 alias ..='cd ..'

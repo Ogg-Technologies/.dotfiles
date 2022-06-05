@@ -12,3 +12,6 @@ bind '"\e[1;5C" forward-word'
 # Enables ctrl-l to clear screen (vi mode disables it)
 bind -m vi-command 'Control-l: clear-screen'
 bind -m vi-insert 'Control-l: clear-screen'
+
+bind -m vi-insert 'Control-p: history-search-backward'
+bind -m vi-insert 'Control-n: history-search-forward'
