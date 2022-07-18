@@ -1,0 +1,44 @@
+/**
+ * Fullscreen rofi theme with transparency that centers the content.
+ * Adapted from https://www.reddit.com/r/linux4noobs/comments/77w97u/comment/dopq1bg/?utm_source=share&utm_medium=web2x&context=3
+ */
+
+configuration {
+    show-icons:   false;
+    sidebar-mode: false;
+}
+
+* {
+    // Default bg is transparent.
+    background-color: transparent;
+    // Default text is white
+    text-color:       white;
+    spacing:          10;
+}
+
+window {
+    // Default font
+    font: "System San Francisco Display 18";
+    fullscreen: true;
+    transparency: "background";
+
+    background-color: #252936c0;
+   
+    // Add dummy widgets on top and bottom so the sizing
+    // nicely centers hdum, independent of resolution. 
+    children: [ dummy1, hdum, dummy2 ];
+}
+
+hdum {
+    orientation: horizontal;
+    // Add dummy widgets on left and right so the sizing
+    // nicely centers mainbox, independent of resolution. 
+    children: [ dummy3, mainbox, dummy4 ];
+}
+
+element selected {
+}
+
+element-text selected {
+    text-color: #9575cd;
+}
