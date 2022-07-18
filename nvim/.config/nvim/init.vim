@@ -453,9 +453,9 @@ vnoremap gsi :lua swap_selection_around_prompt(false)<CR>
 vnoremap gsa :lua swap_selection_around_prompt(true)<CR>
 
 
-let s:fontsize = 14
+let s:fontsize = 12
 " Uses this font: https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/FiraCode/Regular/complete/Fira%20Code%20Regular%20Nerd%20Font%20Complete.ttf
-let s:fontName="FiraCode\\ Nerd\\ Font\\ Mono"
+let s:fontName="FiraCode\\ Nerd\\ Font"
 function! AdjustFontSize(amount)
   let s:fontsize = s:fontsize+a:amount
   :execute "set guifont=" . s:fontName . ":h" . s:fontsize
