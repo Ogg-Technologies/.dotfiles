@@ -1,3 +1,9 @@
 set surround
 set ideajoin
 set clipboard+=unnamed
+set visualbell
+set noerrorbells
+set scrolloff=8
+set ignorecase
+set smartcase
+set incsearch
