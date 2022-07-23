@@ -189,7 +189,7 @@ lua <<EOF
                 vim.keymap.set('n', '<space>lr', vim.lsp.buf.rename, bufopts)
                 vim.keymap.set('n', '<space>la', vim.lsp.buf.code_action, bufopts)
                 vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-                vim.keymap.set('n', '<c-m-l>', vim.lsp.buf.format, bufopts)
+                vim.keymap.set('n', '<c-m-l>', vim.lsp.buf.formatting, bufopts)
                 vim.keymap.set('n', '<space>ld', vim.diagnostic.open_float, opts)
             end,
             capabilities = capabilities,
