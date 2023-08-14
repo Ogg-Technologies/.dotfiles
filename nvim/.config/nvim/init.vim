@@ -25,6 +25,7 @@ Plug 'chentoast/live.nvim' "Preview for :norm command
 Plug 'lukas-reineke/indent-blankline.nvim' "Shows indentation
 Plug 'akinsho/toggleterm.nvim' "Terminal that you can toggle in a split
 Plug 'David-Kunz/treesitter-unit' "Textobject for treesitter nodes
+Plug 'xuhdev/vim-latex-live-preview' "Live preview with :LLPStartPreview
 
 
 Plug 'nvim-lua/plenary.nvim' "Required by refactoring.nvim
@@ -171,7 +172,7 @@ lua <<EOF
     })
 
     -- Setup lspconfig.
-    local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+    local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
     local servers = { "pyright", "vimls", "hls" }
     require("nvim-lsp-installer").setup {
@@ -262,6 +263,8 @@ EOF
 
 vnoremap <leader>rr :lua require('refactoring').select_refactor()<CR>
 
+let g:livepreview_previewer = 'zathura' "Change the pdf viewer to zathura
+
 let g:undoquit_mapping = '' "remove the default <c-w>u mapping
 " Use ctrl shift t as the mapping like browsers do
 noremap <c-s-t> :Undoquit<cr> 
@@ -338,7 +341,7 @@ set mouse=a
 set noshowmode
 set foldmethod=indent "Folds based on indentation
 set foldlevel=99 "Starting fold is at 99 levels of indentation (starts with no folds)
-set scrolloff=8
+set scrolloff=16
 set ignorecase
 set smartcase
 
@@ -369,6 +372,8 @@ map <leader>vcs :silent so $MYVIMRC<cr>
 
 "Make C-c equivalent to esc. Normally C-c does not trigger InsertLeave event
 imap <C-c> <Esc>
+"And remove annoying <C-c> keybinds in sql
+let g:omni_sql_no_default_maps = 1
 
 tnoremap <C-n> <C-\><C-n>
 tnoremap <C-h> <C-\><C-n><C-w>h

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+CARD=$(pactl list cards short | egrep -o 'bluez_card[^>]\S*')
+PROFILE=$(printf "a2dp_sink\nhandsfree_head_unit" | rofi -dmenu -p "Set profile for '$CARD': ")
+if [ -n "$PROFILE" ]; then
+    pactl set-card-profile $CARD $PROFILE
+fi

@@ -11,6 +11,8 @@ alias tt=trash
 
 # Edit file with e
 alias e=$EDITOR
+# Open file with o (with xdg-open, i.e. default application)
+alias o=xdg-open
 
 # Edit bashrc
 alias bashrc='$EDITOR ~/.bashrc'

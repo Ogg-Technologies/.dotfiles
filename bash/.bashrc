@@ -18,6 +18,7 @@ source "$HOME/.config/bash/bash_keybinds"
 
 bash_add_plugin "rupa/z"
 
+bash_add_file "/usr/share/nvm/init-nvm.sh" 
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -30,3 +31,5 @@ if ! shopt -oq posix; then
   fi
 fi
 
+
+[ -f "/home/ogg/.ghcup/env" ] && source "/home/ogg/.ghcup/env" # ghcup-env

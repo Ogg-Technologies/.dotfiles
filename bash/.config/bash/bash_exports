@@ -22,6 +22,9 @@ HISTTIMEFORMAT="%F %T "
 # Set nvim as default editor
 export EDITOR=nvim
 
+# For rupa/z, move .z away from home directory
+export _Z_DATA=$HOME/.local/share/.z
+
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
