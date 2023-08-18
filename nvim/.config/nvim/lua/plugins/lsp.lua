@@ -61,6 +61,18 @@ return {
             vim.keymap.set("n", "<leader>vu", function() vim.lsp.buf.references() end, opts)
             vim.keymap.set("n", "<leader>vr", function() vim.lsp.buf.rename() end, opts)
             vim.keymap.set("n", "<leader>vf", vim.lsp.buf.format)
+
+            local diagnostics_active = true
+            vim.keymap.set('n', '<leader>vt', function()
+                diagnostics_active = not diagnostics_active
+                if diagnostics_active then
+                    vim.diagnostic.show()
+                    print("Diagnostics on")
+                else
+                    vim.diagnostic.hide()
+                    print("Diagnostics off")
+                end
+            end)
         end)
 
         lsp.setup()
